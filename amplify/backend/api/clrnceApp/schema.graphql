@@ -1,0 +1,29 @@
+type Item @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: String
+  price: String
+  description: String
+  image: String
+}
+
+type Deal @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  lat: Float
+  lng: Float
+  radius: String
+  description: String
+  maxRadius: Float
+  expiryDate: AWSDateTime
+}
+
+type User @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: String
+  image: String
+  address: String
+  lat: Float
+  lng: Float
+  email: AWSEmail
+  fcmToken: String
+  status: String
+}

@@ -35,6 +35,12 @@ const ChatContextProvider = ({children}: {children: React.ReactNode}) => {
       );
 
       setChatClient(client);
+
+      const globalChannel = client.channel('livestream', 'global', {
+        name: 'SubangChat',
+      });
+
+      await globalChannel.watch();
     };
 
     initChat();

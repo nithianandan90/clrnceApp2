@@ -1,13 +1,16 @@
 import {createContext, useContext, useEffect, useState} from 'react';
-import {StreamChat} from 'stream-chat';
+import {StreamChat, Channel} from 'stream-chat';
 import {useAuthContext} from './AuthContext';
-
+import {OverlayProvider, Chat} from 'stream-chat-react-native';
+import {ActivityIndicator} from 'react-native';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 export const ChatContext = createContext({});
 
 const ChatContextProvider = ({children}: {children: React.ReactNode}) => {
   const {userAttributes} = useAuthContext();
 
   const [chatClient, setChatClient] = useState<StreamChat>();
+  const [currentChannel, setCurrentChannel] = useState<Channel>();
 
   console.log('attributes chat context', userAttributes);
 
@@ -38,6 +41,8 @@ const ChatContextProvider = ({children}: {children: React.ReactNode}) => {
 
       const globalChannel = client.channel('livestream', 'global', {
         name: 'SubangChat',
+        image:
+          'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/1.jpg',
       });
 
       await globalChannel.watch();
@@ -52,11 +57,23 @@ const ChatContextProvider = ({children}: {children: React.ReactNode}) => {
         chatClient.disconnectUser();
       }
     };
-  });
+  }, []);
 
-  const value = {user: 'Test username'};
+  const value = {chatClient, currentChannel, setCurrentChannel};
 
-  return <ChatContext.Provider value={value}>{children}</ChatContext.Provider>;
+  console.log('chat client', chatClient);
+
+  if (!chatClient) {
+    return <ActivityIndicator />;
+  }
+
+  return (
+    <OverlayProvider>
+      <Chat client={chatClient}>
+        <ChatContext.Provider value={value}>{children}</ChatContext.Provider>
+      </Chat>
+    </OverlayProvider>
+  );
 };
 
 export const useChatContext = () => useContext(ChatContext);

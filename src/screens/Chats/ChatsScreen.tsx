@@ -3,7 +3,13 @@ import React, {useContext} from 'react';
 import {gql, useQuery} from '@apollo/client';
 import {ListUsersQuery, ListUsersQueryVariables} from '../../API';
 import {useChatContext} from '../../contexts/ChatContext';
-
+import {ChannelList} from 'stream-chat-react-native';
+import {StreamChat, Channel} from 'stream-chat';
+import {useNavigation} from '@react-navigation/native';
+import {
+  ChatNavigationProp,
+  ChatStackNavigatorParamList,
+} from '../../types/navigation';
 const listUsers = gql`
   query ListUsers(
     $filter: ModelUserFilterInput
@@ -32,7 +38,9 @@ const listUsers = gql`
 `;
 
 const ChatsScreen = () => {
-  const {user} = useChatContext();
+  const {setCurrentChannel} = useChatContext();
+
+  const navigation = useNavigation<ChatNavigationProp>();
 
   const {data, loading, error} = useQuery<
     ListUsersQuery,
@@ -47,13 +55,12 @@ const ChatsScreen = () => {
     return <Text>{error.message}</Text>;
   }
 
-  console.log(data);
+  const onSelect = (channel: Channel) => {
+    setCurrentChannel(channel);
+    navigation.navigate('ChatRoom');
+  };
 
-  return (
-    <View>
-      <Text>{user}</Text>
-    </View>
-  );
+  return <ChannelList onSelect={onSelect} />;
 };
 
 export default ChatsScreen;

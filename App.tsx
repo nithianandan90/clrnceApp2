@@ -16,17 +16,20 @@ import {gql, useQuery} from '@apollo/client';
 import ChatScreen from './src/screens/Chats/ChatsScreen';
 import AuthContextProvider from './src/contexts/AuthContext';
 import Navigation from './src/navigation';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 Amplify.configure(amplifyconfig);
 
 const App = () => {
   return (
     <SafeAreaView style={{flex: 1}}>
-      <AuthContextProvider>
-        <Client>
-          <Navigation />
-        </Client>
-      </AuthContextProvider>
+      <GestureHandlerRootView style={{flex: 1}}>
+        <AuthContextProvider>
+          <Client>
+            <Navigation />
+          </Client>
+        </AuthContextProvider>
+      </GestureHandlerRootView>
     </SafeAreaView>
   );
 };

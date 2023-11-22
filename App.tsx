@@ -13,17 +13,18 @@ import amplifyconfig from './src/amplifyconfiguration.json';
 import {withAuthenticator} from '@aws-amplify/ui-react-native';
 import Client from './src/apollo/Client';
 import {gql, useQuery} from '@apollo/client';
-import ChatScreen from './src/screens/Chats/ChatScreen';
+import ChatScreen from './src/screens/Chats/ChatsScreen';
 import AuthContextProvider from './src/contexts/AuthContext';
+import Navigation from './src/navigation';
 
 Amplify.configure(amplifyconfig);
 
 const App = () => {
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{flex: 1}}>
       <AuthContextProvider>
         <Client>
-          <ChatScreen />
+          <Navigation />
         </Client>
       </AuthContextProvider>
     </SafeAreaView>

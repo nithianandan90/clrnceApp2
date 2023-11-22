@@ -1,7 +1,8 @@
 import {ActivityIndicator, StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import React, {useContext} from 'react';
 import {gql, useQuery} from '@apollo/client';
 import {ListUsersQuery, ListUsersQueryVariables} from '../../API';
+import {useChatContext} from '../../contexts/ChatContext';
 
 const listUsers = gql`
   query ListUsers(
@@ -30,7 +31,9 @@ const listUsers = gql`
   }
 `;
 
-const ChatScreen = () => {
+const ChatsScreen = () => {
+  const {user} = useChatContext();
+
   const {data, loading, error} = useQuery<
     ListUsersQuery,
     ListUsersQueryVariables
@@ -48,11 +51,11 @@ const ChatScreen = () => {
 
   return (
     <View>
-      <Text>ChatScreen</Text>
+      <Text>{user}</Text>
     </View>
   );
 };
 
-export default ChatScreen;
+export default ChatsScreen;
 
 const styles = StyleSheet.create({});

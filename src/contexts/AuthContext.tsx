@@ -37,19 +37,19 @@ const AuthContextProvider = ({children}: {children: ReactNode}) => {
   const [user, setUser] = useState<UserType>(undefined);
   const [userAttributes, setUserAttributes] = useState<UserAttributesType>();
 
-  console.log('usr', userAttributes);
+  // console.log('usr', userAttributes);
 
   const checkUser = async () => {
     try {
       const authUser = await getCurrentUser();
       const authUserAttributes = await fetchUserAttributes();
 
-      console.log(
-        'set user firing',
-        authUser.username,
-        authUser.userId,
-        authUser.signInDetails,
-      );
+      // console.log(
+      //   'set user firing',
+      //   authUser.username,
+      //   authUser.userId,
+      //   authUser.signInDetails,
+      // );
       setUser(authUser);
       setUserAttributes(authUserAttributes);
     } catch (e) {
